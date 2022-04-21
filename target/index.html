@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Smart Home</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #0F0F0F;
+            color: #F0F0F0;
+        }
+        .control {
+            width: 25%;
+            height: 25px;
+            color: #AAAAAA;
+        }
+    </style>
+</head>
+<body>
+    <h1>Devices</h1>
+    <form class="control" style="background-color: #005500;" onclick="document.getElementById('light_on').submit();" method="post" id="light_on" action="/control">
+        <span>Light ON</span>
+        <input type="hidden" name="pin" value="light">
+        <input type="hidden" name="state" value="1">
+    </form>
+    <form class="control" style="background-color: #550000;" onclick="document.getElementById('light_off').submit();" method="post" id="light_off" action="/control">
+        <span>Light OFF</span>
+        <input type="hidden" name="pin" value="light">
+        <input type="hidden" name="state" value="0">
+    </form>
+</body>
+</html>dfs
