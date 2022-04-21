@@ -25,18 +25,18 @@ public class HTTPServer implements Runnable {
 			in = this.client.getInputStream();
 			writer = new PrintWriter(this.client.getOutputStream());
 
-			String req = "";
+			StringBuilder req = new StringBuilder();
 			System.out.println("Reading...");
 
 			byte[] buffer = new byte[256];
 			while (in.available() > 0) {
 				int read = in.read(buffer);
-				req += new String(buffer, 0, read);
+				req.append(new String(buffer, 0, read));
 			}
 
 			System.out.println("Read, processing...");
 
-			HTTP.Request request = new HTTP.Request(req);
+			HTTP.Request request = new HTTP.Request(req.toString());
 			request.print(System.out);
 
 			if (!request.getProtocolVersion().equals("HTTP/1.1"))
@@ -47,7 +47,6 @@ public class HTTPServer implements Runnable {
 				// received data format is not supported or there were no data at all
 				if (request.getRequestBody() == null)
 					writer.println(HTTP.Response.BadRequest().build());
-
 
 				else {
 					try {
