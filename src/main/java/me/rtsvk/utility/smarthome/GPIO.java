@@ -11,10 +11,12 @@ public class GPIO {
 
 	private String mode;
 	private int pin;
+	private int value;
 
 	public GPIO(int pin, String mode) throws IOException {
 		this.pin = pin;
 		this.mode(mode);
+		this.write(0);
 	}
 
 	public GPIO(int pin, String mode, int initialValue) throws IOException {
@@ -36,6 +38,7 @@ public class GPIO {
 		try {
 			if (this.mode.equals(MODE_INPUT)) return false;
 			Runtime.getRuntime().exec("raspi-gpio set " + this.pin + " " + (value == 1 ? "dh" : "dl"));
+			this.value = value;
 			return true;
 		}
 		catch (IOException e) {
@@ -44,7 +47,7 @@ public class GPIO {
 	}
 
 	public int read() throws IOException {
-		if (this.mode.equals(MODE_OUTPUT)) return -1;
+		if (this.mode.equals(MODE_OUTPUT)) return this.value;
 		Process proc = Runtime.getRuntime().exec("raspi-gpio get " + this.pin);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 		String result = reader.readLine();
