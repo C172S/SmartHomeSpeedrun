@@ -33,9 +33,9 @@ public class HTTP {
 			String[] header = req[0].split("\r\n");
 			String[] data = header[0].split(" ");
 
-			if (data.length > 0) this.method = data[0];
-			if (data.length > 1) this.file = data[1];
-			if (data.length > 2) this.protocolVersion = data[2];
+			this.method = data.length > 0 ? data[0] : "GET";
+			this.file = data.length > 1 ? data[1] : "/";
+			this.protocolVersion = data.length > 2 ? data[2] : "HTTP/1.1";
 
 			// handle request properties
 			this.requestProperties = new HashMap<>();
@@ -120,6 +120,7 @@ public class HTTP {
 
 		public static final String HTTP_OK = "200 OK";
 		public static final String HTTP_BAD_REQUEST = "400 Bad Request";
+		public static final String HTTP_FORBIDDEN = "403 Forbidden";
 		public static final String HTTP_NOT_FOUND = "404 Not Found";
 		public static final String HTTP_INTERNAL_SERVER_ERROR = "500 Internal Server Error";
 		public static final String HTTP_NOT_IMPLEMENTED = "501 Not Implemented";
@@ -160,6 +161,14 @@ public class HTTP {
 			return prepResponse(Response.HTTP_BAD_REQUEST, message);
 		}
 
+		public static Response Forbidden() {
+			return Forbidden("File not found!");
+		}
+
+		public static Response Forbidden(String message) {
+			return prepResponse(Response.HTTP_FORBIDDEN, message);
+		}
+
 		public static Response NotFound() {
 			return NotFound("File not found!");
 		}
@@ -185,17 +194,21 @@ public class HTTP {
 		}
 
 		public static Response HttpVersionNotSupported() {
-			return HttpVersionNotSupported("Method not supported!");
+			return HttpVersionNotSupported("HTTP version not supported");
 		}
 
 		public static Response HttpVersionNotSupported(String message) {
 			return prepResponse(Response.HTTP_VERSION_NOT_SUPPORTED, message);
 		}
 
-		private static Response prepResponse(String responseCode, String message) {
-			String body = "<h1>" + responseCode + "</h1>" + message;
+		public static Response prepResponse(String responseCode, String message) {
+			return prepResponse(responseCode, message, "text/html", false);
+		}
+
+		public static Response prepResponse(String responseCode, String message, String contentType, boolean raw) {
+			String body = (raw ? "" : "<h1>" + responseCode + "</h1><b>") + message;
 			Map<String, Object> params = new HashMap<>();
-			params.put("Content-Type", "text/html");
+			params.put("Content-Type", contentType);
 			params.put("Connection", "close");
 			params.put("Content-length", body.length());
 

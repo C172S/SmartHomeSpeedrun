@@ -1,6 +1,8 @@
 me\rtsvk\utility\smarthome\GPIO.class
 me\rtsvk\utility\smarthome\Main.class
-me\rtsvk\utility\smarthome\HTTP$Request.class
-me\rtsvk\utility\smarthome\HTTPServer.class
 me\rtsvk\utility\smarthome\HTTP.class
 me\rtsvk\utility\smarthome\HTTP$Response.class
+me\rtsvk\utility\smarthome\DiscoveryServer.class
+me\rtsvk\utility\smarthome\HTTP$Request.class
+me\rtsvk\utility\smarthome\HTTPServer.class
+me\rtsvk\utility\smarthome\Util.class
